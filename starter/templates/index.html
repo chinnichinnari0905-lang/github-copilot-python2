@@ -2,17 +2,50 @@
 <html>
 <head>
   <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Sudoku Game</title>
   <link rel="stylesheet" href="/static/styles.css">
 </head>
 <body>
   <h1>Sudoku Game</h1>
+  <div class="controls">
+    <label for="difficulty">Difficulty</label>
+    <select id="difficulty">
+      <option value="easy">Easy</option>
+      <option value="medium" selected>Medium</option>
+      <option value="hard">Hard</option>
+    </select>
+    <span>Time: <strong id="timer" role="timer" aria-live="off">00:00</strong></span>
+    <span>Hints: <strong id="hint-count">0</strong></span>
+    <label for="playerName">Player Name</label>
+    <input id="playerName" name="playerName" type="text" autocomplete="name">
+  </div>
   <div id="sudoku-board"></div>
   <div class="controls">
     <button id="new-game">New Game</button>
-    <button id="check-solution">Check Solution</button>
-    <span id="message"></span>
+    <button id="check-puzzle">Check Puzzle</button>
+    <button id="hint">Hint</button>
+    <button id="toggle-theme" type="button">Dark mode</button>
+    <p id="message" role="status" aria-live="polite"></p>
   </div>
-  <script src="/static/main.js"></script>
+  <section aria-labelledby="leaderboard-heading">
+    <h2 id="leaderboard-heading">Top 10 Leaderboard</h2>
+    <div class="leaderboard-table-wrapper">
+      <table id="leaderboard">
+        <caption class="visually-hidden">Top 10 Sudoku scores</caption>
+        <thead>
+          <tr>
+            <th scope="col">Rank</th>
+            <th scope="col">Player Name</th>
+            <th scope="col">Time</th>
+            <th scope="col">Difficulty</th>
+            <th scope="col">Hints</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </section>
+  <script src="/static/js/sudoku.js"></script>
 </body>
 </html>

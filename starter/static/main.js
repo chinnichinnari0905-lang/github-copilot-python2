@@ -1,6 +1,7 @@
 // Client-side rendering and interaction for the Flask-backed Sudoku
 const SIZE = 9;
 let puzzle = [];
+let lockedCells = [];
 
 function createBoardElement() {
   const boardDiv = document.getElementById('sudoku-board');
@@ -25,8 +26,9 @@ function createBoardElement() {
   }
 }
 
-function renderPuzzle(puz) {
+function renderPuzzle(puz, lockedMask) {
   puzzle = puz;
+  lockedCells = lockedMask;
   createBoardElement();
   const boardDiv = document.getElementById('sudoku-board');
   const inputs = boardDiv.getElementsByTagName('input');
@@ -35,7 +37,7 @@ function renderPuzzle(puz) {
       const idx = i * SIZE + j;
       const val = puzzle[i][j];
       const inp = inputs[idx];
-      if (val !== 0) {
+      if (lockedCells[i][j]) {
         inp.value = val;
         inp.disabled = true;
         inp.className += ' prefilled';
@@ -50,7 +52,10 @@ function renderPuzzle(puz) {
 async function newGame() {
   const res = await fetch('/new');
   const data = await res.json();
-  renderPuzzle(data.puzzle);
+  if (!res.ok) {
+    throw new Error(data.error || 'Unable to start a new game.');
+  }
+  renderPuzzle(data.puzzle, data.locked_cells);
   document.getElementById('message').innerText = '';
 }
 
